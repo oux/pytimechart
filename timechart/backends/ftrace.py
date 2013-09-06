@@ -94,9 +94,9 @@ def parse_ftrace(filename,callback):
     last_percent = 0
     # the base regular expressions
     event_re = re.compile(
-        r'\s*(.+)-([0-9]+)\s+\[([0-9]+)\][^:]*\s+([0-9.]+): ([^:]*): (.*)')
+        r'\s*(.+)-([0-9]+)\s+(\(([^\)]+)\)\s+)?\[([0-9]+)\][^:]*\s+([0-9.]+): ([^:]*): (.*)')
     function_re = re.compile(
-        r'\s*(.+)-([0-9]+)\s+\[([0-9]+)\][^:]*\s+([0-9.]+): (.*) <-(.*)')
+        r'\s*(.+)-([0-9]+)\s+(\(([^\)]+)\)\s+)?\[([0-9]+)\][^:]*\s+([0-9.]+): (.*) <-(.*)')
     last_timestamp = 0
     linenumber = 0
     for line in fid:
@@ -111,15 +111,20 @@ def parse_ftrace(filename,callback):
         res = event_re.match(line)
         if res:
             groups = res.groups()
-            event_name = groups[4]
+            event_name = groups[6]
+            try:
+                tgid = int(groups[3])
+            except:
+                tgid = 0
             event = {
                 'linenumber': linenumber,
                 'common_comm' : groups[0],
                 'common_pid' :  int(groups[1]),
-                'common_cpu' : int(groups[2]),
-                'timestamp' : int(float(groups[3])*1000000),
+                'common_tgid' : tgid,
+                'common_cpu' : int(groups[4]),
+                'timestamp' : int(float(groups[5])*1000000),
                 'event' : event_name,
-                'event_arg' : groups[5]
+                'event_arg' : groups[7]
                 }
             last_timestamp = event['timestamp']
             to_match = event['event_arg']
@@ -139,11 +144,12 @@ def parse_ftrace(filename,callback):
                 'linenumber': linenumber,
                 'common_comm' : res.group(1),
                 'common_pid' :  int(res.group(2)),
-                'common_cpu' : int(res.group(3)),
-                'timestamp' : int(float(res.group(4))*1000000),
+                'common_tgid' : tgid,
+                'common_cpu' : int(res.group(5)),
+                'timestamp' : int(float(res.group(6))*1000000),
                 'event':'function',
-                'callee' : res.group(5),
-                'caller' : res.group(6)
+                'callee' : res.group(7),
+                'caller' : res.group(8)
                 }
             callback(Event(event))
             continue
