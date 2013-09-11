@@ -175,6 +175,8 @@ def load_ftrace(fn):
 
 
 def detect_ftrace(fn):
+    if fn.endswith(".html"):
+        return load_ftrace
     if fn.endswith(".txt"):
         return load_ftrace
     if fn.endswith(".txt.gz"):
