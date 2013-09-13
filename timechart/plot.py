@@ -318,10 +318,10 @@ class tcPlot(BarPlot):
     def _draw_wake_ups(self,gc,processes_y):
         low_i = searchsorted(self.proj.wake_events['time'],self.index_mapper.range.low)
         high_i = searchsorted(self.proj.wake_events['time'],self.index_mapper.range.high)
-        gc.set_stroke_color((0,0,0,.6))
         for i in xrange(low_i,high_i):
-            waker,wakee,ts = self.proj.wake_events[i]
+            waker,wakee,ts,color = self.proj.wake_events[i]
             if processes_y.has_key(wakee) and processes_y.has_key(waker):
+                gc.set_stroke_color(color)
                 y1 = processes_y[wakee]
                 y2 = processes_y[waker]
                 x,y = self.map_screen(array((ts,y1)))
@@ -340,8 +340,8 @@ class tcPlot(BarPlot):
                 gc.line_to(x-3,y+dy)
                 gc.move_to(x,y)
                 gc.line_to(x+3,y+dy)
+                gc.draw_path()
 
-        gc.draw_path()
     def _draw_bg(self,gc,y,color):
         gc.set_alpha(1)
         gc.set_line_width(0)

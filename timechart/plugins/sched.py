@@ -4,6 +4,7 @@ from timechart.model import tcProcess
 
 class sched(plugin):
     additional_colors = """
+    sched_wakeup_arrow      #000000A0
 """
     additional_ftrace_parsers = [
         ]
@@ -33,9 +34,9 @@ class sched(plugin):
         p_stack = self.cur_process[event.common_cpu]
         if p_stack:
             p = p_stack[-1]
-            self.wake_events.append(((p['comm'],p['pid']),(event.comm,event.pid),event.timestamp))
+            self.wake_events.append(((p['comm'],p['pid']),(event.comm,event.pid),event.timestamp,colors.get_traits_color_by_name("sched_wakeup_arrow")))
         else:
-            self.wake_events.append(((event.common_comm,event.common_pid),(event.comm,event.pid),event.timestamp))
+            self.wake_events.append(((event.common_comm,event.common_pid),(event.comm,event.pid),event.timestamp,colors.get_traits_color_by_name("sched_wakeup_arrow")))
 
 
 plugin_register(sched)

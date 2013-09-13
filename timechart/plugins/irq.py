@@ -4,6 +4,7 @@ from timechart.model import tcProcess
 
 class irq(plugin):
     additional_colors = """
+    irq_arrow      #00A000A0
 """
     additional_ftrace_parsers = [
         ('softirq_entry','softirq=%d action=%s','vec','name'),
@@ -107,7 +108,7 @@ class irq(plugin):
         softirqname = "softirq:%d:%s"%(event.vec,event.name)
         if p_stack:
             p = p_stack[-1]
-            self.wake_events.append(((p['comm'],p['pid']),(softirqname,0),event.timestamp))
+            self.wake_events.append(((p['comm'],p['pid']),(softirqname,0),event.timestamp,colors.get_traits_color_by_name("irq_arrow")))
         else:
             p = self.generic_find_process(0,softirqname+" raise","softirq")
             self.generic_process_single_event(p,event)

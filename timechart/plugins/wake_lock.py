@@ -5,6 +5,7 @@ from timechart.model import tcProcess
 class wake_lock(plugin):
     additional_colors = """
 wakelock_bg        	#D6F09D
+wakelock_arrow     	#0000A0A0
 """
     additional_ftrace_parsers = [
         ('wakelock_lock',   'name=%s type=%d', 'name', 'type'),
@@ -17,12 +18,12 @@ wakelock_bg        	#D6F09D
     def do_event_wakelock_lock(proj,event):
         process = proj.generic_find_process(0,"wakelock:%s"%(event.name),"wakelock")
         proj.generic_process_start(process,event,False)
-        proj.wake_events.append(((event.common_comm,event.common_pid),(process['comm'],process['pid']),event.timestamp))
+        proj.wake_events.append(((event.common_comm,event.common_pid),(process['comm'],process['pid']),event.timestamp,colors.get_traits_color_by_name("wakelock_arrow")))
 
     @staticmethod
     def do_event_wakelock_unlock(proj,event):
         process = proj.generic_find_process(0,"wakelock:%s"%(event.name),"wakelock")
         proj.generic_process_end(process,event,False)
-        proj.wake_events.append(((event.common_comm,event.common_pid),(process['comm'],process['pid']),event.timestamp))
+        proj.wake_events.append(((event.common_comm,event.common_pid),(process['comm'],process['pid']),event.timestamp,colors.get_traits_color_by_name("wakelock_arrow")))
 plugin_register(wake_lock)
 
