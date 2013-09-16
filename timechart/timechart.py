@@ -1,6 +1,7 @@
 #!/usr/bin/python
 #------------------------------------------------------------------------------
 import sys
+import logging
 
 def main():
     try:
@@ -54,11 +55,19 @@ def main():
 %prog [options] [trace.txt|trace.txt.gz|trace.txt.lzma|trace.dat]
 
 pytimechart - Fast graphical exploration and visualisation for linux kernel traces.""")
+    parser.add_option("-l", "--log", dest="loglevel", action="store",
+                      help="change log level",
+                      default=False)
     parser.add_option("-p", "--prof", dest="prof", action="store_true",
                       help="activate profiling",
                       default=False)
     (options, args) = parser.parse_args()
 
+    if options.loglevel:
+        numeric_level = getattr(logging, options.loglevel.upper(), None)
+        logging.basicConfig(format='%(levelname)s:%(asctime)s:%(message)s',level=numeric_level)
+    else:
+        logging.basicConfig(format='%(levelname)s:%(asctime)s:%(message)s',level=logging.ERROR)
     # Create the GUI (this does NOT start the GUI event loop).
     gui = GUI()
     if len(args) == 0:
