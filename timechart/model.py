@@ -271,6 +271,11 @@ class tcProject(HasTraits):
         return self.get_partial_text(self.filename, low_line, high_line)
 ######### generic parsing part ##########
 
+    def generic_get_current_comm(self,pid):
+        try:
+            return self.current_comm_process[pid]
+        except:
+            return "<...>"
 
     def generic_find_process(self,pid,comm,ptype,same_pid_match_timestamp=0):
         if self.tmp_process.has_key((pid,comm)):
@@ -282,9 +287,12 @@ class tcProject(HasTraits):
                     if len(p['start_ts'])>0 and p['start_ts'][-1] > same_pid_match_timestamp:
                         p['comm'] = comm
                         self.tmp_process[(pid,comm)] = p
+                        self.current_comm_process[pid] = comm
                         del self.tmp_process[k]
                         return p
         tmp = {'type':ptype,'comm':comm,'pid':pid,'start_ts':[],'end_ts':[],'types':[],'cpus':[],'comments':[]}
+        if not pid==0 and ptype == "user_process":
+            self.current_comm_process[pid] = comm
         if not (pid==0 and ptype == "user_process"):
             self.tmp_process[(pid,comm)] = tmp
         return tmp
@@ -366,6 +374,7 @@ class tcProject(HasTraits):
         self.tmp_c_states = []
         self.tmp_p_states = []
         self.tmp_process = {}
+        self.current_comm_process = {}
         self.timestamps = []
         self.linenumbers = []
         self.cur_process_by_pid = {}
