@@ -32,11 +32,19 @@ class sched(plugin):
     @staticmethod
     def do_event_sched_wakeup(self,event):
         p_stack = self.cur_process[event.common_cpu]
+        callee = {
+                'comm' : event.comm,
+                'pid'  : event.pid,
+                }
         if p_stack:
             p = p_stack[-1]
-            self.wake_events.append(((p['comm'],p['pid']),(event.comm,event.pid),event.timestamp,colors.get_traits_color_by_name("sched_wakeup_arrow")))
+            self.generic_add_wake(p, callee, event.timestamp, "sched_wakeup_arrow")
         else:
-            self.wake_events.append(((event.common_comm,event.common_pid),(event.comm,event.pid),event.timestamp,colors.get_traits_color_by_name("sched_wakeup_arrow")))
+            current_task = {
+                    'comm' : event.common_comm,
+                    'pid'  : event.common_pid,
+                    }
+            self.generic_add_wake(current_task, callee, event.timestamp, "sched_wakeup_arrow")
 
 
 plugin_register(sched)

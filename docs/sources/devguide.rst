@@ -120,7 +120,7 @@ a project class instance is passed to your event callbacks. You can use followin
 
    Used to stop a process event. The timestamp is taken in the event object
 
-* proj.generic_add_wake(caller, callee, event)
+* proj.generic_add_wake(caller, callee, timestamp, color_name)
 
    Used to generate a wake event. This translate into arrows that go from one process to another, at a particular time. Usefull to show process interactions
 

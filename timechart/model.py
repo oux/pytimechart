@@ -354,8 +354,8 @@ class tcProject(HasTraits):
         process['cpus'].append(event.common_cpu)
         process['end_ts'].append(event.timestamp)
 
-    def generic_add_wake(self,caller, callee, event, color):
-        self.wake_events.append(((caller['comm'],caller['pid']),(callee['comm'],callee['pid']),event.timestamp,color))
+    def generic_add_wake(self,caller, callee, timestamp, color):
+        self.wake_events.append(((caller['comm'],caller['pid']),(callee['comm'],callee['pid']),timestamp,colors.get_traits_color_by_name(color)))
 
     def do_function_default(self,event):
         process = self.generic_find_process(0,"kernel function:%s"%(event.callee),"function")

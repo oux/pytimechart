@@ -18,12 +18,21 @@ wakelock_arrow     	#0000A0A0
     def do_event_wakelock_lock(proj,event):
         process = proj.generic_find_process(0,"wakelock:%s"%(event.name),"wakelock")
         proj.generic_process_start(process,event,False)
-        proj.wake_events.append(((event.common_comm,event.common_pid),(process['comm'],process['pid']),event.timestamp,colors.get_traits_color_by_name("wakelock_arrow")))
+        current_task = {
+            'comm' : event.common_comm,
+            'pid'  : event.common_pid,
+            }
+        proj.generic_add_wake(current_task, process, event.timestamp, "wakelock_arrow")
 
     @staticmethod
     def do_event_wakelock_unlock(proj,event):
         process = proj.generic_find_process(0,"wakelock:%s"%(event.name),"wakelock")
         proj.generic_process_end(process,event,False)
-        proj.wake_events.append(((event.common_comm,event.common_pid),(process['comm'],process['pid']),event.timestamp,colors.get_traits_color_by_name("wakelock_arrow")))
+        current_task = {
+            'comm' : event.common_comm,
+            'pid'  : event.common_pid,
+            }
+        proj.generic_add_wake(current_task, process, event.timestamp, "wakelock_arrow")
+
 plugin_register(wake_lock)
 

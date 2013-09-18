@@ -6,6 +6,7 @@ from timechart.model import tcProcess
 class template(plugin):
     additional_colors = """
 template_bg		      #80ff80
+function_calls        #00A000A0
 """
     additional_ftrace_parsers = [
         ]
@@ -24,11 +25,11 @@ template_bg		      #80ff80
 
         # the function caller
         caller = proj.generic_find_process(0,event.caller,"template")
-        proj.generic_add_wake(caller, process,event)
+        proj.generic_add_wake(caller, process,event.timestamp, "function_calls")
 
         # the calling process
         pidcaller = proj.generic_find_process(event.common_pid,event.common_comm,"template")
-        proj.generic_add_wake(pidcaller, process,event)
+        proj.generic_add_wake(pidcaller, process,event.timestamp, "function_calls")
 
     @staticmethod
     def do_function_my_stop_function(proj,event):
