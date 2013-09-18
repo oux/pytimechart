@@ -30,7 +30,11 @@ def _to_traits(color):
     r = int(color[1:3],16)/256.
     g = int(color[3:5],16)/256.
     b = int(color[5:7],16)/256.
-    return r,g,b
+    if (len(color) == 9):
+        a = int(color[7:9],16)/256.
+    else:
+        a = 1
+    return r,g,b,a
 
 def add_color(colorname, color):
     _tc_colors_by_name[colorname] = (color,len(_tc_colors_by_id))
@@ -47,8 +51,8 @@ def parse_colors(color_text):
         if len(line)==2:
             colorname, color = line
             if pending_colors:
-                r1,g1,b1 = last_color
-                r2,g2,b2 = _to_traits(color)
+                r1,g1,b1,a1 = last_color
+                r2,g2,b2,a2 = _to_traits(color)
                 n = len(pending_colors)+2
                 for i in xrange(1,n-1):
                     r = r1+(r2-r1)*i/n
