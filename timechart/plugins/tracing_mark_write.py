@@ -186,7 +186,7 @@ class tracing_mark_write(plugin):
             except KeyError:
                 ctx[key] = 0
             # create a process line that aims to be stacked close to process a la systrace
-            process = proj.generic_find_process(event.common_pid,event.common_comm+"|"+evtype+"|"+("%03d" % ctx[key]),"tracing_mark_write_"+sync)
+            process = proj.generic_find_process_with_tgid(event.common_tgid, event.common_pid, "%s|%s|%03d" % (event.common_comm, evtype, ctx[key]), "tracing_mark_write_"+sync)
             # create a process line that aims to be user trace independant of the process
             usertag = proj.generic_find_process(event.common_pid,event.usertag+"|"+ str(ctx[key]),"tracing_mark_write_sysutag")
             proj.generic_process_start(process,event,False)
@@ -222,7 +222,7 @@ class tracing_mark_write(plugin):
                     logging.debug("ctx_start_usertag %s", ctx_start_usertag)
                     logging.debug("ctx %s\n<-------------------------------------\n", ctx)
 
-                process = proj.generic_find_process(event.common_pid,event.common_comm+"|"+evtype+"|"+("%03d" % ctx[key]),"tracing_mark_write_"+sync)
+                process = proj.generic_find_process_with_tgid(event.common_tgid, event.common_pid, "%s|%s|%03d" % (event.common_comm, evtype, ctx[key]), "tracing_mark_write_"+sync)
                 usertag = proj.generic_find_process(event.common_pid,ctx_start_usertag[key,ctx[key]]+"|"+ str(ctx[key]),"tracing_mark_write_sysutag")
             except KeyError:
                 # hit a TraceEnd before a TraceBegin marker

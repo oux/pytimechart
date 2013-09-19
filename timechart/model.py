@@ -116,6 +116,7 @@ class tcProcess(tcGeneric):
     # end_ts=CArray # inherited from TimeChart
     # values = CArray   # inherited from TimeChart
     pid = Long
+    tgid = Long(0)
     ppid = Long
     selection_time = Long(0)
     selection_pc = Float(0)
@@ -128,7 +129,10 @@ class tcProcess(tcGeneric):
     project = None
     @cached_property
     def _get_name(self):
-        return "%s:%d (%s)"%(self.comm,self.pid, _pretty_time(self.total_time))
+        if self.tgid != 0:
+            return "%d:%s:%d (%s)"%(self.tgid,self.comm,self.pid, _pretty_time(self.total_time))
+        else:
+            return "%s:%d (%s)"%(self.comm,self.pid, _pretty_time(self.total_time))
 
     def get_comment(self,i):
         if len(self.comments)>i:
@@ -277,8 +281,9 @@ class tcProject(HasTraits):
         except:
             return "<...>"
 
-    def generic_find_process(self,pid,comm,ptype,same_pid_match_timestamp=0):
+    def generic_find_process_with_tgid(self,tgid,pid,comm,ptype,same_pid_match_timestamp=0):
         if self.tmp_process.has_key((pid,comm)):
+            self.tmp_process[(pid,comm)]['tgid'] = tgid
             return self.tmp_process[(pid,comm)]
         # else try to find if there has been a process with same pid recently, and different name. Only for user_process because other traces set pid to 0
         if same_pid_match_timestamp != 0 and ptype == "user_process":
@@ -286,16 +291,20 @@ class tcProject(HasTraits):
                 if k[0] == pid and p['type'] == "user_process":
                     if len(p['start_ts'])>0 and p['start_ts'][-1] > same_pid_match_timestamp:
                         p['comm'] = comm
+                        p['tgid'] = tgid
                         self.tmp_process[(pid,comm)] = p
                         self.current_comm_process[pid] = comm
                         del self.tmp_process[k]
                         return p
-        tmp = {'type':ptype,'comm':comm,'pid':pid,'start_ts':[],'end_ts':[],'types':[],'cpus':[],'comments':[]}
+        tmp = {'tgid':tgid,'type':ptype,'comm':comm,'pid':pid,'start_ts':[],'end_ts':[],'types':[],'cpus':[],'comments':[]}
         if not pid==0 and ptype == "user_process":
             self.current_comm_process[pid] = comm
         if not (pid==0 and ptype == "user_process"):
             self.tmp_process[(pid,comm)] = tmp
         return tmp
+
+    def generic_find_process(self,pid,comm,ptype,same_pid_match_timestamp=0):
+        return self.generic_find_process_with_tgid(0,pid,comm,ptype,same_pid_match_timestamp)
 
     def generic_process_start(self,process,event, build_p_stack=True):
         if process['type']=="user_process" and process['pid']==0:
@@ -440,6 +449,8 @@ class tcProject(HasTraits):
             t.end_ts = numpy.array(tc['end_ts'])
             t.types = numpy.array(tc['types'])
             t.cpus = numpy.array(tc['cpus'])
+            if tc.has_key('tgid'):
+                t.tgid = tc['tgid']
             t.comments = tc['comments'] #numpy.array(tc['comments'])
             t.process_type = tc["type"]
             # precompute 16 levels of overview cache
@@ -458,6 +469,9 @@ class tcProject(HasTraits):
                 except ValueError:
                     return len(order)+1
             c = cmp(type_index(x.process_type),type_index(y.process_type))
+            if c != 0:
+                return c
+            c = cmp(x.tgid,y.tgid)
             if c != 0:
                 return c
             c = cmp(x.pid,y.pid)
