@@ -26,7 +26,7 @@ class tracing_mark_write(plugin):
     additional_ftrace_parsers = [
     ('tracing_mark_write',"%s",'traceEvent'),
     ('tracing_mark_write',r"%s\|%d\|%s",'traceEvent','pid','usertag'),
-    ('tracing_mark_write',r"%s\|%d\|%s\|%d",'traceEvent','pid','usertag','value'),
+    ('tracing_mark_write',r"%s\|%d\|%s\|%s",'traceEvent','pid','usertag','value'),
     ]
     additional_process_types = {
        "tracing_mark_write_counter":(tcProcess, MISC_TRACES_CLASS),
@@ -55,7 +55,7 @@ class tracing_mark_write(plugin):
 
         if sync == "async":
             key=(event.common_comm,event.common_pid,event.value)
-            evtype=str(event.value)
+            evtype=event.value
         elif sync == "sync":
             key=(event.common_comm,event.common_pid,evtype)
 
