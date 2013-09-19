@@ -250,7 +250,7 @@ class tracing_mark_write(plugin):
         elif event.traceEvent == "C":
             process = proj.generic_find_process(-1,event.usertag,"tracing_mark_write_counter")
             proj.generic_process_start(process,event,False)
-            process['comments'].append(str(event.value))
+            process['comments'].append(event.value)
 
         else :
             # tracing_mark_write event malformed
