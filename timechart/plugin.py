@@ -4,6 +4,7 @@ WORK_CLASS=2
 MISC_TRACES_CLASS=3
 KERNEL_CLASS=4
 USER_CLASS=5
+SYSUTAG_CLASS=6
 
 plugin_list = []
 class plugin:

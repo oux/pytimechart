@@ -30,6 +30,8 @@ class TimeChartOptions(HasTraits):
     show_c_states = Bool(True)
     auto_zoom_y = Bool(True)
     use_overview = Bool(True)
+    sysusertag = Bool(True)
+    show_sysusertag = Bool(False)
 
     proj = tcProject
 
@@ -49,6 +51,8 @@ class TimeChartOptions(HasTraits):
         self.plot.invalidate()
     def _use_overview_changed(self):
         self.plot.invalidate()
+    def _show_sysusertag_changed(self):
+        self.plot.invalidate()
     def _auto_zoom_y_changed(self,val):
         self.plot.auto_zoom_y()
         self.auto_zoom_timer.Stop()
@@ -67,6 +71,8 @@ class TimeChartOptions(HasTraits):
         self.auto_zoom_y = value
     def _on_toggle_overview(self, value):
         self.use_overview = value
+    def _on_toggle_sysutag(self, value):
+        self.show_sysusertag = value
 
 class TextView(HasTraits):
     text = Str
@@ -205,7 +211,7 @@ class tcPlot(BarPlot):
             if points.size > 500:
                 overview = tc.get_overview_ts(self.overview_threshold)
                 points = self._gather_timechart_points(overview[0],overview[1],base_y,.2)
-            
+
         if self.options.remove_pids_not_on_screen and points.size == 0:
             return 0
         if bar_middle_y+self.bar_height < self.y or bar_middle_y-self.bar_height>self.y+self.height:
@@ -389,6 +395,12 @@ class tcPlot(BarPlot):
         not_on_screen = []
         on_screen = []
         for tc in self.proj.processes:
+            if self.options.show_sysusertag:
+                if tc.process_type == "tracing_mark_write_sync" or tc.process_type == "tracing_mark_write_async":
+                    continue
+            else:
+                if tc.process_type == "tracing_mark_write_sysutag":
+                    continue
             if tc.show==False:
                 continue
             processes_y[(tc.comm,tc.pid)] = y+.5
