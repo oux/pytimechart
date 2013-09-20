@@ -171,6 +171,7 @@ class tcProject(HasTraits):
     processes = List(tcProcess)
     selected =  List(tcProcess)
     filtered_processes = List(tcProcess)
+    process_columns = process_table_editor.columns_without_tgid
     remove_filter = Button(image=ImageResource("clear.png"),width_padding=0,height_padding=0,style='toolbar')
     minimum_time_filter = Enum((0,1000,10000,50000,100000,500000,1000000,5000000,1000000,5000000,10000000,50000000))
     minimum_events_filter = Enum((0,2,4,8,10,20,40,100,1000,10000,100000,1000000))
@@ -226,7 +227,14 @@ class tcProject(HasTraits):
         self.filtered_processes = filtered_processes
     _minimum_time_filter_changed = _filter_changed
     _minimum_events_filter_changed = _filter_changed
+    def get_show_tgid(self):
+        for tc in self.processes:
+            if tc.tgid != 0:
+                return True
+        return False
     def _processes_changed(self):
+        if self.get_show_tgid():
+            self.process_columns = process_table_editor.columns_with_tgid
         self._filter_changed()
     def _on_show(self):
         for i in self.selected:
