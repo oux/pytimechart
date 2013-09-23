@@ -11,7 +11,7 @@ from enthought.chaco.label import Label
 from enthought.kiva.traits.kiva_font_trait import KivaFont
 from enthought.enable.api import black_color_trait, KeySpec
 
-from model import tcProject
+from model import tcProject,tcProcess
 from colors import get_aggcolor_by_id,get_color_id
 import tools
 from numpy import linspace,arange,amin,amax
@@ -161,6 +161,8 @@ class tcPlot(BarPlot):
     on_screen = List
     options = TimeChartOptions()
     range_tools = RangeSelectionTools()
+    current_tgid = 0
+    row_even = 0
     redraw_timer = None
     def invalidate(self):
         self.invalidate_draw()
@@ -216,7 +218,19 @@ class tcPlot(BarPlot):
             return 0
         if bar_middle_y+self.bar_height < self.y or bar_middle_y-self.bar_height>self.y+self.height:
             return 1 #quickly decide we are not on the screen
-        self._draw_bg(gc,base_y,tc.bg_color)
+        cr,cg,cb,ca = tc.bg_color
+        if type(tc) == tcProcess and tc.pid > 0:
+            if tc.tgid != self.current_tgid:
+                self.current_tgid = tc.tgid
+                self.row_even = (self.row_even + 1) % 2
+            if self.row_even == 0:
+                if cr > .2:
+                    cr -= .2
+                if cg > .2:
+                    cg -= .2
+                if cb > .2:
+                    cb -= .2
+        self._draw_bg(gc,base_y,(cr,cg,cb,ca))
         # we are too short in height, dont display all the labels
         if self.last_label >= bar_middle_y:
             # draw label
@@ -394,6 +408,7 @@ class tcPlot(BarPlot):
         processes_y = {0xffffffffffffffffL:y+1}
         not_on_screen = []
         on_screen = []
+        self.row_even = 0
         for tc in self.proj.processes:
             if self.options.show_sysusertag:
                 if tc.process_type == "tracing_mark_write_sync" or tc.process_type == "tracing_mark_write_async":
