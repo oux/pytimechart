@@ -282,11 +282,15 @@ class tcPlot(BarPlot):
                             continue
                         label.text = tc.get_comment(i)
                         l_w,l_h = label.get_width_height(gc)
-                        if l_w < sx:
-                            offset = array((x,y+self.bar_height*.6/2-l_h/2))
-                            gc.translate_ctm(*offset)
-                            label.draw(gc)
-                            gc.translate_ctm(*(-offset))
+                        char_width=l_w/len(tc.get_comment(i))
+
+                        label.text = tc.get_comment(i)[:int(sx/char_width)]
+                        l_w,l_h = label.get_width_height(gc)
+
+                        offset = array((x,y+self.bar_height*.6/2-l_h/2))
+                        gc.translate_ctm(*offset)
+                        label.draw(gc)
+                        gc.translate_ctm(*(-offset))
             if tc.max_latency > 0: # emphase events where max_latency is reached
                 ts = tc.max_latency_ts
                 if ts.size>0:
