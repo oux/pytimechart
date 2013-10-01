@@ -96,7 +96,33 @@ class myZoomTool(ZoomTool):
         states = GroupedToolState([pan_state, zoom_state])
         states.apply(self)
         self._append_state(states)
-
+    def normal_mouse_move(self, event):
+        # print 'normal_mouse_move:%s' % event
+        super(myZoomTool,self).normal_mouse_move(event)
+    def normal_left_down(self,event):
+        super(myZoomTool,self).normal_left_down(event)
+    def normal_left_up(self,event):
+        c = self.component
+        ts = int(c.map_data((event.x,0)))
+        if c.marks.has_key(ts):
+            c.marks.pop(ts)
+        else:
+            # If there is a mark near the cursor it's probable the user wanted
+            # to remove it instead of add a new mark
+            poped = False
+            for mark in c.marks:
+                ts_min = int(c.map_data((event.x-3,0)))
+                ts_max = int(c.map_data((event.x+3,0)))
+                if mark in xrange(ts_min,ts_max):
+                    c.marks.pop(mark)
+                    poped = True
+                    break
+            # If no mark found 3 pixel around the cursor the user want to add a
+            # new mark
+            if not poped:
+                c.marks[ts]="comment"
+        c.invalidate_draw()
+        c.request_redraw()
 
 # left down conflicts with the panning tool
 # just overide and disable change state to moving

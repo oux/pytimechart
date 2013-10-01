@@ -11,7 +11,7 @@ from enthought.chaco.label import Label
 from enthought.kiva.traits.kiva_font_trait import KivaFont
 from enthought.enable.api import black_color_trait, KeySpec
 
-from model import tcProject,tcProcess
+from model import tcProject, tcProcess, _pretty_time
 from colors import get_aggcolor_by_id,get_color_id
 import tools
 from numpy import linspace,arange,amin,amax
@@ -32,6 +32,7 @@ class TimeChartOptions(HasTraits):
     use_overview = Bool(True)
     sysusertag = Bool(True)
     show_sysusertag = Bool(False)
+    show_marks = Bool(True)
 
     proj = tcProject
 
@@ -53,6 +54,8 @@ class TimeChartOptions(HasTraits):
         self.plot.invalidate()
     def _show_sysusertag_changed(self):
         self.plot.invalidate()
+    def _show_marks_changed(self):
+        self.plot.invalidate()
     def _auto_zoom_y_changed(self,val):
         self.plot.auto_zoom_y()
         self.auto_zoom_timer.Stop()
@@ -73,6 +76,8 @@ class TimeChartOptions(HasTraits):
         self.use_overview = value
     def _on_toggle_sysutag(self, value):
         self.show_sysusertag = value
+    def _on_toggle_marks(self, value):
+        self.show_marks = value
 
 class TextView(HasTraits):
     text = Str
@@ -163,6 +168,7 @@ class tcPlot(BarPlot):
     range_tools = RangeSelectionTools()
     current_tgid = 0
     row_even = 0
+    marks = {}
     redraw_timer = None
     def invalidate(self):
         self.invalidate_draw()
@@ -305,6 +311,55 @@ class tcPlot(BarPlot):
                         gc.rects(rects)
                         gc.draw_path()
         return 1
+    def _draw_marks(self,gc,marks):
+        timestamps = marks.keys()
+        timestamps.sort()
+        previous=None
+        font = self.title_font
+        label = Label(text="Dummy",
+                      font=font,
+                      color=self.title_color,
+                      rotate_angle=0)
+        yo=self.outer_height
+        l_w,l_h = label.get_width_height(gc)
+        y=yo-l_h
+        # Add white alpha to be more readable
+        gc.set_alpha(.8)
+        gc.set_fill_color((1,1,1,1))
+        gc.set_line_width(0)
+        gc.rect(self.x, self.y2, self.width, -l_h-4)
+        gc.draw_path()
+        gc.set_line_width(self.line_width)
+        gc.set_alpha(0.5)
+        for ts in timestamps:
+            x = self.map_screen(array((ts,0)))[0]
+            if previous:
+                gc.move_to(previous,y)
+                if 10 < x-previous:
+                    gc.line_to(previous+5,y+3)
+                    gc.line_to(previous+5,y-3)
+                    gc.line_to(previous,y)
+                gc.line_to(x,y)
+                if 10 < x-previous:
+                    gc.line_to(x-5,y-3)
+                    gc.line_to(x-5,y+3)
+                    gc.line_to(x,y)
+                label.text = "%s" % _pretty_time(ts - previous_ts)
+                l_w,l_h = label.get_width_height(gc)
+
+                if l_w/2 < x-previous:
+                    x_label=previous+((x-previous-l_w)/2)
+                    offset = array((x_label,y))
+                    gc.translate_ctm(*offset)
+                    label.draw(gc)
+                    gc.translate_ctm(*(-offset))
+
+            gc.move_to(x,0)
+            gc.line_to(x,yo)
+            previous = x
+            previous_ts = ts
+        gc.draw_path()
+
     def _draw_freqchart(self,gc,tc,label,y):
         self._draw_bg(gc,y,tc.bg_color)
         low_i = searchsorted(tc.start_ts,self.index_mapper.range.low)
@@ -432,6 +487,8 @@ class tcPlot(BarPlot):
         self.on_screen = on_screen
         if self.options.show_wake_events:
             self._draw_wake_ups(gc,processes_y)
+        if self.options.show_marks:
+            self._draw_marks(gc,self.marks)
 
         message = ""
         if self.proj.filename=="dummy":

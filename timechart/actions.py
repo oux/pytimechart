@@ -87,6 +87,7 @@ of noise when fully unzoomed"""
         {"name": "toggle_cpufreq","tooltip":'Show/Hide the cpufreq representation.', "default":True},
         {"name": "toggle_cpuidle","tooltip":'Show/Hide the cpuidle representation.', "default":True},
         {"name": "toggle_sysutag","tooltip":'Show/Hide the systrace user tags.', "default":False},
+        {"name": "toggle_marks"  ,"tooltip":'Show/Hide marks.', "default":True},
 # only for debugging overview
 #        {"name": "toggle_overview","tooltip":'This will accelerate plotting by merging contiguous events when zoomed out.', "default":True},
         {},
