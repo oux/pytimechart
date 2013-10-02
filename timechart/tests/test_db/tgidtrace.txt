@@ -1,0 +1,137 @@
+ id.defcontainer-3611  ( 3611) [000] ...1 20810.237004: tracing_mark_write: B|3611|serviceCreate\n\
+ id.defcontainer-3611  ( 3611) [000] ...1 20810.243355: tracing_mark_write: E\n\
+ id.defcontainer-3611  ( 3611) [000] ...1 20810.243432: tracing_mark_write: B|3611|serviceBind\n\
+ id.defcontainer-3611  ( 3611) [000] ...1 20810.244116: tracing_mark_write: E\n\
+ id.defcontainer-3611  ( 3611) [000] d..3 20810.244239: sched_switch: prev_comm=id.defcontainer prev_pid=3611 prev_prio=120 prev_state=S ==> next_comm=PackageManager next_pid=464 next_prio=130\n\
+        Binder_A-862   (  443) [000] d..5 20810.253535: sched_wakeup: comm=er.ServerThread pid=457 prio=118 success=1 target_cpu=000\n\
+        Binder_A-862   (  443) [000] d..3 20810.254261: sched_switch: prev_comm=Binder_A prev_pid=862 prev_prio=120 prev_state=S ==> next_comm=er.ServerThread next_pid=457 next_prio=118\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.254307: tracing_mark_write: B|443|broadcastReceiveReg\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.254352: tracing_mark_write: E\n\
+ er.ServerThread-457   (  443) [000] d..3 20810.254379: sched_switch: prev_comm=er.ServerThread prev_pid=457 prev_prio=118 prev_state=S ==> next_comm=android.vending next_pid=1664 next_prio=120\n\
+ ActivityManager-460   (  443) [000] d..5 20810.682057: sched_wakeup: comm=er.ServerThread pid=457 prio=118 success=1 target_cpu=000\n\
+ ActivityManager-460   (  443) [000] d..3 20810.682072: sched_switch: prev_comm=ActivityManager prev_pid=460 prev_prio=118 prev_state=S ==> next_comm=er.ServerThread next_pid=457 next_prio=118\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.682106: tracing_mark_write: B|443|broadcastReceiveReg\n\
+ er.ServerThread-457   (  443) [000] d..4 20810.682245: sched_wakeup: comm=FileObserver pid=463 prio=120 success=1 target_cpu=001\n\
+ er.ServerThread-457   (  443) [000] d..3 20810.682383: sched_switch: prev_comm=er.ServerThread prev_pid=457 prev_prio=118 prev_state=S ==> next_comm=ActivityManager next_pid=460 next_prio=118\n\
+    FileObserver-463   (  443) [001] d..4 20810.682403: sched_wakeup: comm=er.ServerThread pid=457 prio=118 success=1 target_cpu=000\n\
+  PackageManager-464   (  443) [000] d..3 20810.682410: sched_switch: prev_comm=PackageManager prev_pid=464 prev_prio=130 prev_state=R ==> next_comm=er.ServerThread next_pid=457 next_prio=118\n\
+ er.ServerThread-457   (  443) [000] d..4 20810.682417: sched_wakeup: comm=ActivityManager pid=460 prio=118 success=1 target_cpu=000\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.682529: tracing_mark_write: B|443|/system/framework/framework-res.apk\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.682580: tracing_mark_write: E\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.682585: tracing_mark_write: B|443|/system/app/GmsCore.apk\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.683176: tracing_mark_write: E\n\
+ er.ServerThread-457   (  443) [000] d..3 20810.683192: sched_switch: prev_comm=er.ServerThread prev_pid=457 prev_prio=118 prev_state=S ==> next_comm=ActivityManager next_pid=460 next_prio=118\n\
+    FileObserver-463   (  443) [001] d..4 20810.683227: sched_wakeup: comm=er.ServerThread pid=457 prio=118 success=1 target_cpu=000\n\
+ ActivityManager-460   (  443) [000] d..3 20810.683482: sched_switch: prev_comm=ActivityManager prev_pid=460 prev_prio=118 prev_state=S ==> next_comm=er.ServerThread next_pid=457 next_prio=118\n\
+ er.ServerThread-457   (  443) [000] d..3 20810.683488: sched_switch: prev_comm=er.ServerThread prev_pid=457 prev_prio=118 prev_state=S ==> next_comm=PackageMonitor next_pid=469 next_prio=130\n\
+ ActivityManager-460   (  443) [000] d..4 20810.683517: sched_wakeup: comm=er.ServerThread pid=457 prio=118 success=1 target_cpu=000\n\
+ ActivityManager-460   (  443) [000] d..3 20810.683533: sched_switch: prev_comm=ActivityManager prev_pid=460 prev_prio=118 prev_state=S ==> next_comm=er.ServerThread next_pid=457 next_prio=118\n\
+ er.ServerThread-457   (  443) [000] d..3 20810.683787: sched_switch: prev_comm=er.ServerThread prev_pid=457 prev_prio=118 prev_state=S ==> next_comm=ActivityManager next_pid=460 next_prio=118\n\
+    FileObserver-463   (  443) [001] d..4 20810.683799: sched_wakeup: comm=er.ServerThread pid=457 prio=118 success=1 target_cpu=000\n\
+  PackageMonitor-469   (  443) [000] d..3 20810.683805: sched_switch: prev_comm=PackageMonitor prev_pid=469 prev_prio=130 prev_state=R ==> next_comm=er.ServerThread next_pid=457 next_prio=118\n\
+ er.ServerThread-457   (  443) [000] d..4 20810.683812: sched_wakeup: comm=ActivityManager pid=460 prio=118 success=1 target_cpu=000\n\
+ er.ServerThread-457   (  443) [000] d..3 20810.683985: sched_switch: prev_comm=er.ServerThread prev_pid=457 prev_prio=118 prev_state=S ==> next_comm=ActivityManager next_pid=460 next_prio=118\n\
+    FileObserver-463   (  443) [001] d..4 20810.684009: sched_wakeup: comm=er.ServerThread pid=457 prio=118 success=1 target_cpu=000\n\
+        Binder_A-862   (  443) [000] d..3 20810.692469: sched_switch: prev_comm=Binder_A prev_pid=862 prev_prio=120 prev_state=S ==> next_comm=er.ServerThread next_pid=457 next_prio=118\n\
+ er.ServerThread-457   (  443) [000] ..s1 20810.692549: cpufreq_interactive_notyet: cpu=0 load=68 cur=2133000 actual=2133000 targ=1733000\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.692629: tracing_mark_write: B|443|/system/framework/framework-res.apk\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.692665: tracing_mark_write: E\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.692670: tracing_mark_write: B|443|/system/app/Email.apk\n\
+ er.ServerThread-457   (  443) [000] d..3 20810.692969: sched_switch: prev_comm=er.ServerThread prev_pid=457 prev_prio=118 prev_state=S ==> next_comm=launcher-loader next_pid=878 next_prio=120\n\
+        Binder_8-791   (  443) [001] d..4 20810.692980: sched_wakeup: comm=er.ServerThread pid=457 prio=118 success=1 target_cpu=000\n\
+ putmethod.latin-702   (  702) [000] d..3 20810.695358: sched_switch: prev_comm=putmethod.latin prev_pid=702 prev_prio=120 prev_state=D ==> next_comm=er.ServerThread next_pid=457 next_prio=118\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.695461: tracing_mark_write: E\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.696100: tracing_mark_write: B|443|/system/framework/framework-res.apk\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.696123: tracing_mark_write: E\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.696127: tracing_mark_write: B|443|/system/app/GoogleLoginService.apk\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.696454: tracing_mark_write: E\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.696764: tracing_mark_write: E\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.696807: tracing_mark_write: B|443|broadcastReceiveReg\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.696828: tracing_mark_write: E\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.696846: tracing_mark_write: B|443|broadcastReceiveReg\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.697464: tracing_mark_write: B|443|/system/framework/framework-res.apk\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.697486: tracing_mark_write: E\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.697490: tracing_mark_write: B|443|/system/app/Books.apk\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.697929: tracing_mark_write: E\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.698338: tracing_mark_write: B|443|/system/framework/framework-res.apk\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.698357: tracing_mark_write: E\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.698361: tracing_mark_write: B|443|/system/app/CalendarGoogle.apk\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.698745: tracing_mark_write: E\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.699099: tracing_mark_write: B|443|/system/framework/framework-res.apk\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.699117: tracing_mark_write: E\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.699121: tracing_mark_write: B|443|/system/app/ChromeBookmarksSyncAdapter.apk\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.699222: tracing_mark_write: E\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.699490: tracing_mark_write: B|443|/system/framework/framework-res.apk\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.699505: tracing_mark_write: E\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.699510: tracing_mark_write: B|443|/system/app/ChromeWithBrowser.apk\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.699925: tracing_mark_write: E\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.700413: tracing_mark_write: B|443|/system/framework/framework-res.apk\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.700429: tracing_mark_write: E\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.700433: tracing_mark_write: B|443|/system/app/Exchange2.apk\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.700571: tracing_mark_write: E\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.701132: tracing_mark_write: B|443|/system/framework/framework-res.apk\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.701148: tracing_mark_write: E\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.701152: tracing_mark_write: B|443|/system/app/Gmail2.apk\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.701638: tracing_mark_write: E\n\
+ er.ServerThread-457   (  443) [000] d..3 20810.702559: sched_switch: prev_comm=er.ServerThread prev_pid=457 prev_prio=118 prev_state=R+ ==> next_comm=Compiler next_pid=3688 next_prio=120\n\
+ launcher-loader-878   (  798) [000] d..3 20810.707074: sched_switch: prev_comm=launcher-loader prev_pid=878 prev_prio=120 prev_state=S ==> next_comm=er.ServerThread next_pid=457 next_prio=118\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.707632: tracing_mark_write: B|443|/system/framework/framework-res.apk\n\
+ er.ServerThread-457   (  443) [000] d..3 20810.707657: sched_switch: prev_comm=er.ServerThread prev_pid=457 prev_prio=118 prev_state=R+ ==> next_comm=Binder_2 next_pid=1216 next_prio=120\n\
+        Compiler-812   (  798) [000] d..3 20810.728942: sched_switch: prev_comm=Compiler prev_pid=812 prev_prio=120 prev_state=S ==> next_comm=er.ServerThread next_pid=457 next_prio=118\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.728958: tracing_mark_write: E\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.728980: tracing_mark_write: B|443|/system/app/GoogleContactsSyncAdapter.apk\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.729147: tracing_mark_write: E\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.729644: tracing_mark_write: B|443|/system/framework/framework-res.apk\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.729664: tracing_mark_write: E\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.729668: tracing_mark_write: B|443|/system/app/GoogleDocs.apk\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.730203: tracing_mark_write: E\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.730703: tracing_mark_write: B|443|/system/framework/framework-res.apk\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.730725: tracing_mark_write: E\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.730729: tracing_mark_write: B|443|/system/app/GoogleServicesFramework.apk\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.731011: tracing_mark_write: E\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.731477: tracing_mark_write: B|443|/system/framework/framework-res.apk\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.731499: tracing_mark_write: E\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.731504: tracing_mark_write: B|443|/system/app/PlusOne.apk\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.732458: tracing_mark_write: E\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.733336: tracing_mark_write: B|443|/system/framework/framework-res.apk\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.733358: tracing_mark_write: E\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.733362: tracing_mark_write: B|443|/system/app/SocialGallery.apk\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.733833: tracing_mark_write: E\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.734288: tracing_mark_write: B|443|/system/framework/framework-res.apk\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.734310: tracing_mark_write: E\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.734315: tracing_mark_write: B|443|/system/app/Videos.apk\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.740328: tracing_mark_write: E\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.740930: tracing_mark_write: E\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.740966: tracing_mark_write: B|443|broadcastReceiveReg\n\
+ er.ServerThread-457   (  443) [000] d..4 20810.741013: sched_wakeup: comm=logcat pid=171 prio=120 success=1 target_cpu=001\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.741039: tracing_mark_write: E\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.741059: tracing_mark_write: B|443|broadcastReceiveReg\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.741118: tracing_mark_write: E\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.741136: tracing_mark_write: B|443|broadcastReceiveReg\n\
+ er.ServerThread-457   (  443) [000] d..4 20810.741213: sched_wakeup: comm=logcat pid=171 prio=120 success=1 target_cpu=001\n\
+ er.ServerThread-457   (  443) [000] d..4 20810.741285: sched_wakeup: comm=Binder_3 pid=683 prio=120 success=1 target_cpu=001\n\
+ er.ServerThread-457   (  443) [000] d..3 20810.741526: sched_switch: prev_comm=er.ServerThread prev_pid=457 prev_prio=118 prev_state=S ==> next_comm=PackageMonitor next_pid=469 next_prio=130\n\
+        Binder_3-683   (  443) [001] d..4 20810.741534: sched_wakeup: comm=er.ServerThread pid=457 prio=118 success=1 target_cpu=000\n\
+              GC-776   (  771) [000] d..3 20810.742875: sched_switch: prev_comm=GC prev_pid=776 prev_prio=120 prev_state=S ==> next_comm=er.ServerThread next_pid=457 next_prio=118\n\
+ er.ServerThread-457   (  443) [000] d..3 20810.742884: sched_switch: prev_comm=er.ServerThread prev_pid=457 prev_prio=118 prev_state=S ==> next_comm=PackageManager next_pid=464 next_prio=130\n\
+        Binder_3-683   (  443) [001] d..4 20810.746139: sched_wakeup: comm=er.ServerThread pid=457 prio=118 success=1 target_cpu=000\n\
+  PackageManager-464   (  443) [000] d..3 20810.746156: sched_switch: prev_comm=PackageManager prev_pid=464 prev_prio=130 prev_state=R+ ==> next_comm=er.ServerThread next_pid=457 next_prio=118\n\
+ er.ServerThread-457   (  443) [000] d..4 20810.746659: sched_wakeup: comm=PackageMonitor pid=469 prio=130 success=1 target_cpu=000\n\
+ er.ServerThread-457   (  443) [000] d..4 20810.746741: sched_wakeup: comm=Compiler pid=448 prio=120 success=1 target_cpu=001\n\
+ er.ServerThread-457   (  443) [000] d..4 20810.746955: sched_wakeup: comm=logcat pid=171 prio=120 success=1 target_cpu=001\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.746985: tracing_mark_write: E\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.747034: tracing_mark_write: B|443|broadcastReceiveReg\n\
+ er.ServerThread-457   (  443) [000] d..5 20810.747141: sched_wakeup: comm=AppWidgetServic pid=598 prio=120 success=1 target_cpu=001\n\
+ er.ServerThread-457   (  443) [000] ...1 20810.747149: tracing_mark_write: E\n\
+ er.ServerThread-457   (  443) [000] d..3 20810.747172: sched_switch: prev_comm=er.ServerThread prev_pid=457 prev_prio=118 prev_state=S ==> next_comm=Binder_5 next_pid=768 next_prio=120\n\
+  PackageMonitor-469   (  443) [000] d..5 20810.800289: sched_wakeup: comm=er.ServerThread pid=457 prio=118 success=1 target_cpu=000\n\
+  PackageMonitor-469   (  443) [000] d..3 20810.800295: sched_switch: prev_comm=PackageMonitor prev_pid=469 prev_prio=130 prev_state=R+ ==> next_comm=er.ServerThread next_pid=457 next_prio=118\n\
+ er.ServerThread-457   (  443) [000] d..3 20810.800328: sched_switch: prev_comm=er.ServerThread prev_pid=457 prev_prio=118 prev_state=S ==> next_comm=PackageMonitor next_pid=469 next_prio=130\n\
+  PackageMonitor-469   (  443) [000] d..4 20810.800338: sched_wakeup: comm=er.ServerThread pid=457 prio=118 success=1 target_cpu=000\n\
+  PackageMonitor-469   (  443) [000] d..3 20810.800341: sched_switch: prev_comm=PackageMonitor prev_pid=469 prev_prio=130 prev_state=R+ ==> next_comm=er.ServerThread next_pid=457 next_prio=118\n\
+ er.ServerThread-457   (  443) [000] d..3 20810.800372: sched_switch: prev_comm=er.ServerThread prev_pid=457 prev_prio=118 prev_state=S ==> next_comm=PackageMonitor next_pid=469 next_prio=130\n\
+\n";
+  </script>
+<!-- END TRACE -->
+</body>
+</html>
