@@ -266,13 +266,14 @@ class tcProject(HasTraits):
 ######### stats part ##########
 
     def process_stats(self,start,end):
-        fact = 100./(end-start)
-        for tc in self.processes:
-            starts,ends,types = tc.get_partial_tables(start,end)
-            inds = np.where(types==colors.get_color_id("running"))
-            tot = sum(ends[inds]-starts[inds])
-            tc.selection_time = int(tot)
-            tc.selection_pc = tot*fact
+        if end-start > 0:
+            fact = 100./(end-start)
+            for tc in self.processes:
+                starts,ends,types = tc.get_partial_tables(start,end)
+                inds = np.where(types==colors.get_color_id("running"))
+                tot = sum(ends[inds]-starts[inds])
+                tc.selection_time = int(tot)
+                tc.selection_pc = tot*fact
     def get_selection_text(self,start,end):
         low_line = -1
         high_line = -1
