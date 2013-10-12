@@ -208,11 +208,16 @@ class tcPlot(BarPlot):
     def _draw_label(self,gc,label,text,x,y):
         label.text = text
         l_w,l_h = label.get_width_height(gc)
+        gc.set_alpha(0.5)
+        gc.set_fill_color((1,1,1,1))
+        gc.set_line_width(0)
+        gc.rect(x, y-l_h/2, l_w, l_h)
+        gc.draw_path()
+        gc.set_line_width(self.line_width)
         offset = array((x,y-l_h/2))
         gc.translate_ctm(*offset)
         label.draw(gc)
         gc.translate_ctm(*(-offset))
-        return l_w,l_h
     def _draw_timechart(self,gc,tc,label,base_y):
         bar_middle_y = self.first_bar_y+(base_y+.5)*self.bar_height
         points = self._gather_timechart_points(tc.start_ts,tc.end_ts,base_y,.2)
@@ -241,9 +246,8 @@ class tcPlot(BarPlot):
         self._draw_bg(gc,base_y,(cr,cg,cb,ca))
         # we are too short in height, dont display all the labels
         if self.last_label >= bar_middle_y:
-            # draw label
-            l_w,l_h = self._draw_label(gc,label,tc.name,self.x,bar_middle_y)
-            self.last_label = bar_middle_y-8
+            label.text = tc.name
+            l_w,l_h = label.get_width_height(gc)
         else:
             l_w,l_h = 0,0
         if points.size != 0:
@@ -251,8 +255,10 @@ class tcPlot(BarPlot):
             if l_w != 0: # we did not draw label because too short on space
                 gc.set_alpha(0.2)
                 gc.move_to(self.x+l_w,bar_middle_y)
+                gc.set_line_dash([5,10])
                 gc.line_to(self.x+self.width,bar_middle_y)
                 gc.draw_path()
+                gc.set_line_dash([0])
             gc.set_alpha(0.5)
             # map the bars start and stop locations into screen space
             lower_left_pts = self.map_screen(points[:,(0,2)])
@@ -289,13 +295,13 @@ class tcPlot(BarPlot):
                         if sx<8: # not worth calculatig text size
                             continue
                         label.text = tc.get_comment(i)
-                        l_w,l_h = label.get_width_height(gc)
-                        char_width=l_w/len(tc.get_comment(i))
+                        cl_w,cl_h = label.get_width_height(gc)
+                        char_width=cl_w/len(tc.get_comment(i))
 
                         label.text = tc.get_comment(i)[:int(sx/char_width)]
-                        l_w,l_h = label.get_width_height(gc)
+                        cl_w,cl_h = label.get_width_height(gc)
 
-                        offset = array((x,y+self.bar_height*.6/2-l_h/2))
+                        offset = array((x,y+self.bar_height*.6/2-cl_h/2))
                         gc.translate_ctm(*offset)
                         label.draw(gc)
                         gc.translate_ctm(*(-offset))
@@ -312,6 +318,9 @@ class tcPlot(BarPlot):
                         rects=column_stack((lower_left_pts, bounds))
                         gc.rects(rects)
                         gc.draw_path()
+        if self.last_label >= bar_middle_y:
+            self._draw_label(gc,label,tc.name,self.x,bar_middle_y)
+            self.last_label = bar_middle_y-8
         return 1
     def _draw_marks(self,gc,marks):
         timestamps = marks.keys()
