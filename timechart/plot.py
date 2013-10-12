@@ -431,6 +431,7 @@ class tcPlot(BarPlot):
                 gc.move_to(x,y)
                 gc.line_to(x+3,y+dy)
                 gc.draw_path()
+        gc.set_stroke_color(self.line_color_)
 
     def _draw_bg(self,gc,y,color):
         gc.set_alpha(1)
