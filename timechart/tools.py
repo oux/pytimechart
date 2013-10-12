@@ -97,7 +97,9 @@ class myZoomTool(ZoomTool):
         states.apply(self)
         self._append_state(states)
     def normal_mouse_move(self, event):
-        # print 'normal_mouse_move:%s' % event
+        c = self.component
+        ts = int(c.map_data((event.x,0)))
+        c.status = "Cursor: %d" % ts
         super(myZoomTool,self).normal_mouse_move(event)
     def normal_left_down(self,event):
         super(myZoomTool,self).normal_left_down(event)

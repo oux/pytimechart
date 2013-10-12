@@ -106,7 +106,6 @@ class TextView(HasTraits):
             except:
                 print "unable to write file..."
 class RangeSelectionTools(HasTraits):
-    time = Str
     start = 0
     end = 0
     def connect(self,plot):
@@ -118,11 +117,12 @@ class RangeSelectionTools(HasTraits):
         if value is not None :
             self.start, self.end = amin(value), amax(value)
             time = self.end-self.start
-            self.time = "%d.%03d %03ds  left=%d.%03d %03ds         right=%d.%03d %03ds"%(time/1000000,(time/1000)%1000,time%1000, self.start/1000000, (self.start/1000)%1000, self.start%1000, self.end/1000000, (self.end/1000)%1000, self.end%1000)
+            self.plot.selection_status = "selection time:%d.%03d %03ds  left=%d.%03d %03ds  right=%d.%03d %03ds"%(time/1000000,(time/1000)%1000,time%1000, self.start/1000000, (self.start/1000)%1000, self.start%1000, self.end/1000000, (self.end/1000)%1000, self.end%1000)
             self.plot.immediate_invalidate()
             self._timer.Stop()
             self._timer.Start()
         else:
+            self.plot.selection_status = ""
             self.start = 0
             self.end = 0
     def _on_zoom(self):
@@ -164,6 +164,8 @@ class tcPlot(BarPlot):
     title_color = ColorTrait("black")
     not_on_screen = List
     on_screen = List
+    status = Str
+    selection_status = Str
     options = TimeChartOptions()
     range_tools = RangeSelectionTools()
     current_tgid = 0
@@ -544,7 +546,7 @@ def create_timechart_container(project):
     value_mapper = LinearMapper(range=value_range,domain_limit=(0,project.num_cpu*2+project.num_process))
     index = ArrayDataSource(array((low,high)), sort_order="ascending")
     plot = tcPlot(index=index,
-                         proj=project, bgcolor="white",padding=(0,0,0,40),
+                         proj=project, bgcolor="white",padding=(0,0,0,20),
                          use_backbuffer = True,
                          fill_padding = True,
                          value_mapper = value_mapper,
@@ -568,7 +570,7 @@ def create_timechart_container(project):
     plot.tools.append(plot.range_selection)
     plot.overlays.append(RangeSelectionOverlay(component=plot,axis="index",use_backbuffer=True))
 
-    axe = PlotAxis(orientation='bottom',title='time',mapper=index_mapper,component=plot)
+    axe = PlotAxis(orientation='bottom',mapper=index_mapper,component=plot)
     plot.underlays.append(axe)
     plot.options.connect(plot)
     plot.range_tools.connect(plot)

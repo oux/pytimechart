@@ -54,8 +54,8 @@ class tcWindow(HasTraits):
     def __init__(self,project):
         self.project = project
         self.plot =  create_timechart_container(project)
-        self.plot_range_tools = self.plot.range_tools
-        self.plot_range_tools.on_trait_change(self._selection_time_changed, "time")
+        self.plot.on_trait_change(self._status_changed, "selection_status")
+        self.plot.on_trait_change(self._status_changed, "status")
         self.trait_view().title = self.get_title()
     def get_title(self):
         if self.project.filename == "dummy":
@@ -67,7 +67,6 @@ class tcWindow(HasTraits):
         HSplit(
             VSplit(
                 Item('project', show_label = False, editor=InstanceEditor(view = 'process_view'), style='custom',width=150),
-#                Item('plot_range_tools', show_label = False, editor=InstanceEditor(view = 'selection_view'), style='custom',width=150,height=100)
                 ),
             Item('plot', show_label = False, editor = ComponentEditor()),
             ),
@@ -95,8 +94,11 @@ class tcWindow(HasTraits):
         aboutBox().edit_traits()
     def _on_doc(self):
         browse_doc()
-    def _selection_time_changed(self):
-        self.status = "selection time:%s"%(self.plot_range_tools.time)
+    def _status_changed(self):
+        if self.plot.selection_status != "":
+            self.status = "%s | %s" % (self.plot.status,self.plot.selection_status)
+        else:
+            self.status = "%s" % self.plot.status
 
 
 prof = 0
