@@ -31,6 +31,7 @@ class binder(plugin):
         ctx[event.transaction_id] = {
                 'comm' : proj.generic_get_current_comm(event.common_pid),
                 'pid'  : event.common_pid,
+                'ts'   : event.timestamp,
                 }
 
     @staticmethod
@@ -41,8 +42,9 @@ class binder(plugin):
             callee = {
                     'comm' : proj.generic_get_current_comm(event.common_pid),
                     'pid'  : event.common_pid,
+                    'ts'   : event.timestamp,
                     }
-            proj.generic_add_wake(caller, callee, event.timestamp, "binder_arrow")
+            proj.generic_add_ipc(caller, callee, "binder_arrow")
         except KeyError:
             logging.warning("binder parsing error (not sender found for %s(last comm:%s)-%d transaction=%d)", event.common_comm, proj.generic_get_current_comm(event.common_pid), event.common_pid, event.transaction_id)
             return
