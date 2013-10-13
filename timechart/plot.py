@@ -25,7 +25,7 @@ from enthought.pyface.timer import timer
 process_colors=[0x000000,0x555555,0xffff88,0x55ffff,0xAD2D2D, 0xeeeeee,0xeeaaaa,0xaaaaee,0xee0000]
 class TimeChartOptions(HasTraits):
     remove_pids_not_on_screen = Bool(True)
-    show_wake_events = Bool(False)
+    show_ipc_events = Bool(False)
     show_p_states = Bool(True)
     show_c_states = Bool(True)
     auto_zoom_y = Bool(True)
@@ -44,7 +44,7 @@ class TimeChartOptions(HasTraits):
         self.plot.invalidate()
     def _remove_pids_not_on_screen_changed(self):
         self.plot.invalidate()
-    def _show_wake_events_changed(self):
+    def _show_ipc_events_changed(self):
         self.plot.invalidate()
     def _show_p_states_changed(self):
         self.plot.invalidate()
@@ -64,8 +64,8 @@ class TimeChartOptions(HasTraits):
         self.auto_zoom_timer.Stop()
     def _on_toggle_autohide(self, value):
         self.remove_pids_not_on_screen = value
-    def _on_toggle_wakes(self, value):
-        self.show_wake_events = value
+    def _on_toggle_ipc(self, value):
+        self.show_ipc_events = value
     def _on_toggle_cpuidle(self, value):
         self.show_c_states = value
     def _on_toggle_cpufreq(self, value):
@@ -405,21 +405,24 @@ class tcPlot(BarPlot):
                     gc.translate_ctm(*offset)
                     label.draw(gc)
                     gc.translate_ctm(*(-offset))
-    def _draw_wake_ups(self,gc,processes_y):
-        low_i = searchsorted(self.proj.wake_events['time'],self.index_mapper.range.low)
-        high_i = searchsorted(self.proj.wake_events['time'],self.index_mapper.range.high)
+    def _draw_ipc(self,gc,processes_y):
+        low_i = searchsorted(self.proj.ipc_events['time_sender'],self.index_mapper.range.low)
+        high_i = searchsorted(self.proj.ipc_events['time_sender'],self.index_mapper.range.high)
+        gc.set_fill_color((0,0,0,0))
         for i in xrange(low_i,high_i):
-            waker,wakee,ts,color = self.proj.wake_events[i]
-            if processes_y.has_key(wakee) and processes_y.has_key(waker):
+            sender,receiver,ts_sender,ts_receiver,color = self.proj.ipc_events[i]
+            if processes_y.has_key(receiver) and processes_y.has_key(sender):
                 gc.set_stroke_color(color)
-                y1 = processes_y[wakee]
-                y2 = processes_y[waker]
-                x,y = self.map_screen(array((ts,y1)))
-                gc.move_to(x,y)
-                y2 = processes_y[waker]
-                x,y = self.map_screen(array((ts,y2)))
+                y1 = processes_y[receiver]
+                y2 = processes_y[sender]
+                x,y = self.map_screen(array((ts_receiver,y1)))
+                gc.move_to(x,y-5)
                 gc.line_to(x,y)
-                x,y = self.map_screen(array((ts,(y1+y2)/2)))
+                y2 = processes_y[sender]
+                x,y = self.map_screen(array((ts_sender,y2)))
+                gc.line_to(x,y)
+                gc.line_to(x,y+5)
+                x,y = self.map_screen(array(((ts_receiver+ts_sender)/2,(y1+y2)/2)))
                 if y1 > y2:
                     y+=5
                     dy=-5
@@ -497,8 +500,8 @@ class tcPlot(BarPlot):
                 not_on_screen.append(tc)
         self.not_on_screen = not_on_screen
         self.on_screen = on_screen
-        if self.options.show_wake_events:
-            self._draw_wake_ups(gc,processes_y)
+        if self.options.show_ipc_events:
+            self._draw_ipc(gc,processes_y)
         if self.options.show_marks:
             self._draw_marks(gc,self.marks)
 

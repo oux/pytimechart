@@ -373,7 +373,13 @@ class tcProject(HasTraits):
         process['end_ts'].append(event.timestamp)
 
     def generic_add_wake(self,caller, callee, timestamp, color):
-        self.wake_events.append(((caller['comm'],caller['pid']),(callee['comm'],callee['pid']),timestamp,colors.get_traits_color_by_name(color)))
+        self.ipc_events.append(((caller['comm'],caller['pid']),(callee['comm'],callee['pid']),timestamp,timestamp,colors.get_traits_color_by_name(color)))
+
+    def generic_add_ipc(self,caller, callee, color):
+        self.ipc_events.append(((caller['comm'],caller['pid']),(callee['comm'],callee['pid']),caller['ts'],callee['ts'],colors.get_traits_color_by_name(color)))
+
+    #def generic_add_ipc(self,caller, callee, timestamp_caller,timestamp_callee, color):
+    #    self.ipc_events.append(((caller['comm'],caller['pid']),(callee['comm'],callee['pid']),timestamp_caller,timestamp_callee,colors.get_traits_color_by_name(color)))
 
     def do_function_default(self,event):
         process = self.generic_find_process(0,"kernel function:%s"%(event.callee),"function")
@@ -396,7 +402,7 @@ class tcProject(HasTraits):
         self.timestamps = []
         self.linenumbers = []
         self.cur_process_by_pid = {}
-        self.wake_events = []
+        self.ipc_events = []
         self.cur_process = [None]*20
         self.last_irq={}
         self.last_spi=[]
@@ -433,7 +439,7 @@ class tcProject(HasTraits):
             t.types = numpy.array(tc['types'])
             i+=1
             p_states.append(t)
-        self.wake_events = numpy.array(self.wake_events,dtype=[('waker',tuple),('wakee',tuple),('time','uint64'),('type',tuple)])
+        self.ipc_events = numpy.array(self.ipc_events,dtype=[('sender',tuple),('receiver',tuple),('time_sender','uint64'),('time_receiver','uint64'),('type',tuple)])
         self.p_states=p_states
         processes = []
         last_ts = 0
