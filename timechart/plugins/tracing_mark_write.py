@@ -248,9 +248,15 @@ class tracing_mark_write(plugin):
         # TraceCounter marker code
         # #######################
         elif event.traceEvent == "C":
-            process = proj.generic_find_process(-1,event.usertag,"tracing_mark_write_counter")
-            proj.generic_process_start(process,event,False)
-            process['comments'].append(event.value)
+            process = None
+            try:
+                process = proj.generic_find_process(-1,event.usertag,"tracing_mark_write_counter")
+                proj.generic_process_end(process,event,False)
+            except:
+                pass
+            if event.value is not "0":
+                proj.generic_process_start(process,event,False)
+                process['comments'].append(event.value)
 
         else :
             # tracing_mark_write event malformed
