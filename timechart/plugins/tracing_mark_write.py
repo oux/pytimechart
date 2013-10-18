@@ -136,14 +136,22 @@ class tracing_mark_write(plugin):
                 event.pid = match_SFC_Events.group(2)
                 event.usertag = match_SFC_Events.group(3)
                 event.value = match_SFC_Events.group(4)
+                event.common_tgid = 0 #comming from kernel tgid ans pid irrelevant
+                event.common_pid = 0
                 tracing_mark_write.do_event_tracing_mark_write(proj,event)
             if match_B_Events :
                 event.traceEvent = match_B_Events.group(1)
                 event.pid = match_B_Events.group(2)
                 event.usertag = match_B_Events.group(3)
+                trace_printk = True
+                event.common_tgid = 0 #comming from kernel tgid ans pid irrelevant
+                event.common_pid = 0
                 tracing_mark_write.do_event_tracing_mark_write(proj,event)
             if match_E_Events:
                 event.traceEvent = match_E_Events.group(1)
+                trace_printk = True
+                event.common_tgid = 0 #comming from kernel tgid ans pid irrelevant
+                event.common_pid = 0
                 tracing_mark_write.do_event_tracing_mark_write(proj,event)
 
     @staticmethod
@@ -188,8 +196,9 @@ class tracing_mark_write(plugin):
             # create a process line that aims to be stacked close to process a la systrace
             process = proj.generic_find_process_with_tgid(event.common_tgid, event.common_pid, "%s|%s|%03d" % (event.common_comm, evtype, ctx[key]), "tracing_mark_write_"+sync)
             # create a process line that aims to be user trace independant of the process
-            usertag = proj.generic_find_process(event.common_pid,event.usertag+"|"+ str(ctx[key]),"tracing_mark_write_sysutag")
+            usertag = proj.generic_find_process_with_tgid(event.common_tgid, event.common_pid, event.usertag+"|"+ str(ctx[key]),"tracing_mark_write_sysutag")
             proj.generic_process_start(process,event,False)
+            #~ print "B usertag:%s " % (usertag)
             proj.generic_process_start(usertag,event,False)
             # collect timestamp on user tag for later use on 'E' marker
             ctx_start_ts[key,ctx[key]] = event.timestamp
@@ -223,11 +232,12 @@ class tracing_mark_write(plugin):
                     logging.debug("ctx %s\n<-------------------------------------\n", ctx)
 
                 process = proj.generic_find_process_with_tgid(event.common_tgid, event.common_pid, "%s|%s|%03d" % (event.common_comm, evtype, ctx[key]), "tracing_mark_write_"+sync)
-                usertag = proj.generic_find_process(event.common_pid,ctx_start_usertag[key,ctx[key]]+"|"+ str(ctx[key]),"tracing_mark_write_sysutag")
+                usertag = proj.generic_find_process_with_tgid(event.common_tgid, event.common_pid, ctx_start_usertag[key,ctx[key]]+"|"+ str(ctx[key]),"tracing_mark_write_sysutag")
             except KeyError:
                 # hit a TraceEnd before a TraceBegin marker
                 return
             proj.generic_process_end(process,event,False)
+            #~ print "E usertag:%s " % (usertag)
             proj.generic_process_end(usertag,event,False)
 
             # compute duration and add comment to plot
@@ -250,7 +260,7 @@ class tracing_mark_write(plugin):
         elif event.traceEvent == "C":
             process = None
             try:
-                process = proj.generic_find_process(-1,event.usertag,"tracing_mark_write_counter")
+                process = proj.generic_find_process_with_tgid(event.common_tgid, event.common_pid, event.usertag,"tracing_mark_write_counter")
                 proj.generic_process_end(process,event,False)
             except:
                 pass
