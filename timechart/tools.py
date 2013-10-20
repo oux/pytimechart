@@ -3,12 +3,14 @@ try:
     from enthought.chaco.tools.tool_states import ZoomState, PanState, GroupedToolState, ToolState
 except:
   pass
+from traits.api import Float
 from copy import copy
 
 class myZoomTool(ZoomTool):
     """ a zoom tool which change y range only when control is pressed
     it also hande some page up page down to zoom via keyboard 
     """
+    zoom_factor = Float(1.2)
     def normal_mouse_wheel(self, event):
         if event.control_down:
             self.tool_mode = "box"
@@ -44,10 +46,10 @@ class myZoomTool(ZoomTool):
         if my_fake_event.mouse_wheel:
             self.normal_mouse_wheel(my_fake_event)
     def zoom_in(self, factor=0):
-        if self.tool_mode != "range":
-            return super(myZoomTool, self).zoom_in(factor)
         if factor == 0:
             factor = self.zoom_factor
+        if self.tool_mode != "range":
+            return super(myZoomTool, self).zoom_in_y(factor)
         new_index_factor = self._index_factor * factor
         new_value_factor = self._value_factor
 
@@ -70,10 +72,10 @@ class myZoomTool(ZoomTool):
         states.apply(self)
         self._append_state(states)
     def zoom_out(self, factor=0):
-        if self.tool_mode != "range":
-            return super(myZoomTool, self).zoom_in(factor)
         if factor == 0:
             factor = self.zoom_factor
+        if self.tool_mode != "range":
+            return super(myZoomTool, self).zoom_out_y(factor)
 
         new_index_factor = self._index_factor / factor
 
