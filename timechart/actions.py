@@ -109,6 +109,8 @@ You can also save some part of a trace to another file with this option
     return tuple(ret)
 def _create_menubar_actions():
     desc = (('&File', ( {"name": "open_trace_file","tooltip":'open new file into pytimechart'},
+                        {"name": "load_context","tooltip":'load pytimechart context'},
+                        {"name": "save_context","tooltip":'save pytimechart context'},
                         {"name": "exit","tooltip":'exit pytimechart'})),
             ('&Help', ( {"name": "about","tooltip":'about'},{"name": "doc","tooltip":'doc'})))
     ret = []

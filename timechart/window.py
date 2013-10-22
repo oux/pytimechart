@@ -1,4 +1,5 @@
 import sys,os
+import pickle
 from enthought.traits.api import  HasTraits,Str,Button
 from enthought.traits.ui.api import InstanceEditor,Item,View,HSplit,VSplit,Handler, StatusItem
 from enthought.traits.ui.menu import Action, MenuBar, ToolBar, Menu, Separator
@@ -85,6 +86,11 @@ class tcWindow(HasTraits):
             self._ui.dispose()
     def _on_view_properties(self):
         self.plot.options.edit_traits()
+    def _on_load_context(self,n=None):
+        self.plot.marks = pickle.load( open( self.project.filename + ".save.p", "rb" ) )
+        self.plot.invalidate()
+    def _on_save_context(self,n=None):
+        pickle.dump( self.plot.marks, open( self.project.filename + ".save.p", "wb" ) )
     def _on_exit(self,n=None):
         self.close()
         sys.exit(0)
