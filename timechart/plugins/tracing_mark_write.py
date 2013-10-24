@@ -160,7 +160,7 @@ class tracing_mark_write(plugin):
         # could get corrupted tracing_mark_write event
         if len(event.traceEvent) != 1 :
             logging.warning("tracing_mark_write plug-ins: line %d malformed tracing_mark_write event - Ignoring", event.linenumber)
-            logging.warning("likely you had trace buffer underrun")
+            logging.warning("likely you had trace buffer underrun\n")
             return
 
         if event.traceEvent == "B" or event.traceEvent == "E":
@@ -172,6 +172,12 @@ class tracing_mark_write(plugin):
         elif event.traceEvent == "C":
             sync = "counter"
             evtype = "counter"
+        else:
+            # invalid trace.Event
+            logging.warning("tracing_mark_write plug-ins: line %d malformed tracing_mark_write event - Ignoring", event.linenumber)
+            logging.warning("likely you had trace buffer underrun\n")
+            return
+
 
         if sync == "async":
             key=(event.common_comm,event.common_pid,event.value)
